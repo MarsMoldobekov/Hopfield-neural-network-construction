@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <list>
+#include <fstream>
 
 using namespace std;
 
@@ -41,8 +42,37 @@ class neuron_net_system {
 public:
 	const link_coeffs& _coeffs;
 
+	struct _neurons_line {
+		const neurons_line& _line;
+		const size_t _width;
+		const size_t _height;
+
+		_neurons_line(
+			const neurons_line& _line,
+			size_t _width,
+			size_t _height
+		) : _line(_line),
+			_width(_width),
+			_height(_height) {
+
+		}
+	};
+
 	neuron_net_system(const link_coeffs& _coeffs) : _coeffs(_coeffs) {
 
+	}
+
+	friend ostream& operator<<(ostream& stream, const _neurons_line& line) {
+		neurons_line::const_iterator it = line._line.begin();
+		for (size_t i = 0; i < line._height; i++) {
+			for (size_t j = 0; j < line._width; j++) {
+				stream << neuron_t::write(*it);
+				it++;
+			}
+			stream << endl;
+		}
+
+		return stream;
 	}
 
 	bool do_step(neurons_line& line) {
