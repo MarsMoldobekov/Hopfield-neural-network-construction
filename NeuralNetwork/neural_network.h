@@ -4,6 +4,7 @@
 #include <numeric>
 #include <vector>
 #include <algorithm>
+#include <list>
 
 using namespace std;
 
@@ -77,7 +78,36 @@ public:
 		return _steps_done;
 	}
 
-	size_t steps_donw() const {
+	link_coeffs learn_neuron_net(const list<neurons_line>& src_image) {
+		link_coeffs result_coeffs;
+		size_t neurons_count = src_image.front().size();
+
+		result_coeffs.resize(neurons_count);
+		for (size_t i = 0; i < neurons_count; i++) {
+			result_coeffs[i].resize(neurons_count, 0);
+		}
+
+		for (size_t i = 0; i < neurons_count; i++) {
+			for (size_t j = 0; j < i; j++) {
+				neuron_t::coeff_t val = 0;
+				val = accumulate(
+					src_image.begin(),
+					src_image.end(),
+					neuron_t::coeff_t(0.0),
+					[i, j](neuron_t::coeff_t old_val, const neurons_line& image) -> neuron_t::coeff_t {
+						return old_val + static_cast<int>(image[i]) * static_cast<int>(image[j]);
+					}
+				);
+
+				result_coeffs[i][j] = val;
+				result_coeffs[j][i] = val;
+			}
+		}
+
+		return result_coeffs;
+	}
+
+	size_t steps_done() const {
 		return _steps_done;
 	}
 private:
