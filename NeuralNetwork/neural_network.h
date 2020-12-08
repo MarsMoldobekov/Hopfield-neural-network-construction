@@ -19,10 +19,12 @@ public:
 	typedef state state_t;
 
 	static state read(char c) {
+		//TODO: change parametr
 		return c == '*' ? state::UPPER_STATE : state::LOWER_STATE;
 	}
 
 	static char write(state s) {
+		//TODO: change return value
 		return s == state::LOWER_STATE ? ' ' : '*';
 	}
 
