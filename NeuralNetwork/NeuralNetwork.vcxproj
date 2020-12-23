@@ -153,8 +153,29 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dirent.h" />
-    <ClInclude Include="FileSystemReader.h" />
     <ClInclude Include="neural_network.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="etallons\0.png" />
+    <Image Include="etallons\1.png" />
+    <Image Include="etallons\2.png" />
+    <Image Include="etallons\3.png" />
+    <Image Include="etallons\4.png" />
+    <Image Include="etallons\5.png" />
+    <Image Include="etallons\6.png" />
+    <Image Include="etallons\7.png" />
+    <Image Include="etallons\8.png" />
+    <Image Include="etallons\9.png" />
+    <Image Include="etallons\test\0.png" />
+    <Image Include="etallons\test\1.png" />
+    <Image Include="etallons\test\2.png" />
+    <Image Include="etallons\test\3.png" />
+    <Image Include="etallons\test\4.png" />
+    <Image Include="etallons\test\5.png" />
+    <Image Include="etallons\test\6.png" />
+    <Image Include="etallons\test\7.png" />
+    <Image Include="etallons\test\8.png" />
+    <Image Include="etallons\test\9.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

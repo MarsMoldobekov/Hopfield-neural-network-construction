@@ -26,8 +26,67 @@
     <ClInclude Include="neural_network.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="FileSystemReader.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="etallons\0.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\0.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\2.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\3.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\4.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\5.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\6.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\7.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\8.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\test\9.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\2.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\3.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\4.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\5.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\6.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\7.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\8.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="etallons\9.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>
