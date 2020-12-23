@@ -39,16 +39,8 @@ vector<string> fetchFiles(string path) {
     return files;
 }
 
-Mat reduce_image_size(const Mat& m) {
+Mat change_image_size(const Mat& m, float rescaleFactor) {
     Mat result;
-    const float rescaleFactor = 0.5;
-    resize(m, result, Size(), rescaleFactor, rescaleFactor);
-    return result;
-}
-
-Mat increase_image_size(const Mat& m) {
-    Mat result;
-    const float rescaleFactor = 2.0;
     resize(m, result, Size(), rescaleFactor, rescaleFactor);
     return result;
 }
@@ -57,7 +49,7 @@ vector<state> mat_to_vector(const Mat& m) {
     vector<state> data;
     vector<uchar> _array;
 
-    Mat new_m = reduce_image_size(m);
+    Mat new_m = change_image_size(m, 0.5);
 
     if (new_m.isContinuous()) {
         _array.assign(new_m.data, new_m.data + new_m.total() * new_m.channels());
@@ -82,11 +74,9 @@ Mat vector_to_mat(const vector<state>& image_v) {
     for_each(image_v.begin(), image_v.end(), [&image_u](state val) {
         image_u.push_back(Neuron::write(val));
     });
-    int width = sqrt(image_v.size());
-    int height = width;
 
     Mat image_m = Mat(image_u, true).reshape(1, 50);
-    Mat result = increase_image_size(image_m);
+    Mat result = change_image_size(image_m, 2);
 
     return result;
 }
