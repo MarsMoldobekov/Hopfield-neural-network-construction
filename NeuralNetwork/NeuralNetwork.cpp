@@ -1,18 +1,17 @@
 ﻿#include <iostream>
 #include <vector>
+#include <list>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include "dirent.h"
+#include "neural_network.h"
 
 using namespace std;
 using namespace cv;
-
-void print_syntax() {
-    cout << "Syntax:\nNeuralNetwork [input-dir] [output-file]\n";
-}
 
 string getFilesExt(string s) {
     size_t i = s.rfind('.', s.length());
@@ -40,59 +39,88 @@ vector<string> fetchFiles(string path) {
     return files;
 }
 
-vector<double> mat_to_vector(Mat m, bool normalized = true) {
-    assert(m.channels() == 1);
-    vector<double> data;
+Mat reduce_image_size(const Mat& m) {
+    Mat result;
+    const float rescaleFactor = 0.5;
+    resize(m, result, Size(), rescaleFactor, rescaleFactor);
+    return result;
+}
 
-    for (int r = 0; r < m.rows; r++) {
-        for (int c = 0; c < m.cols; c++) {
-            double val = (double)m.at<uchar>(r, c);
+Mat increase_image_size(const Mat& m) {
+    Mat result;
+    const float rescaleFactor = 2.0;
+    resize(m, result, Size(), rescaleFactor, rescaleFactor);
+    return result;
+}
 
-            if (normalized) {
-                val /= 255;
-            }
+vector<state> mat_to_vector(const Mat& m) {
+    vector<state> data;
+    vector<uchar> _array;
 
-            data.push_back(val);
+    Mat new_m = reduce_image_size(m);
+
+    if (new_m.isContinuous()) {
+        _array.assign(new_m.data, new_m.data + new_m.total() * new_m.channels());
+    }
+    else {
+        for (int i = 0; i < new_m.rows; i++) {
+            _array.insert(_array.end(), new_m.ptr<uchar>(i), new_m.ptr<uchar>(i) + new_m.cols * new_m.channels());
         }
     }
+
+    for_each(_array.begin(), _array.end(),
+        [&data](uchar val) {
+            data.push_back(Neuron::read(val));
+        }
+    );
 
     return data;
 }
 
+Mat vector_to_mat(const vector<state>& image_v) {
+    vector<uchar> image_u;
+    for_each(image_v.begin(), image_v.end(), [&image_u](state val) {
+        image_u.push_back(Neuron::write(val));
+    });
+    int width = sqrt(image_v.size());
+    int height = width;
+
+    Mat image_m = Mat(image_u, true).reshape(1, 50);
+    Mat result = increase_image_size(image_m);
+
+    return result;
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        print_syntax();
+        cout << "Syntax:\nNeuralNetwork [etallons-dir] [test-image]\n";
         exit(-1);
     }
 
     vector<string> files = fetchFiles(argv[1]);
-    string output_file = argv[2];
+    string test_file = argv[2];
 
-    vector<vector<double>> data;
+    vector<Mat> images;
+    list<vector<state>> data;
 
     for (int i = 0; i < files.size(); i++) {
         Mat m = imread(files.at(i), 0);
+        images.push_back(m);
         data.push_back(mat_to_vector(m));
     }
+    Mat test_image = imread(test_file, 0);
+    vector<state> test = mat_to_vector(test_image);
 
-    ofstream fs(output_file.c_str());
+    NeuronNet net(data);
+    auto step = net.recognize(test);
+    cout << step << endl;
 
-    for (size_t i = 0; i < data.size(); i++) {
-        for (size_t j = 0; j < data.at(i).size(); j++) {
-            fs << data.at(i).at(j);
+    Mat recognized_image = vector_to_mat(test);
+    imshow("Test Image", test_image);
+    imshow("Test Image (Recognized)", recognized_image);
 
-            if (j != (data.at(i).size() - 1)) {
-                fs << ",";
-            } else {
-                if (i != data.size() - 1) {
-                    fs << endl;
-                }
-            }
-        }
-    }
-
-    fs.close();
-    cout << "Done.\n";
+    waitKey(0);
+    destroyAllWindows();
 
     return(0);
 }
