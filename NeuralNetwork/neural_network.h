@@ -13,39 +13,27 @@ enum state{
 };
 
 class Neuron {
-private:
-	state _state;
-
 public:
-	Neuron(state _state=LOWER_STATE) : _state(_state) {
-
-	}
-
 	static state read(uchar i) {
-		return i >= 250 ? UPPER_STATE : LOWER_STATE;
+		return i == 0 ? UPPER_STATE : LOWER_STATE;
 	}
 
 	static uchar write(state s) {
-		return s == UPPER_STATE ? 255 : 0;
+		return s == UPPER_STATE ? 0 : 255;
 	}
 };
 
 class NeuronNet {
 private:
-	vector<Neuron> _neurons;
 	vector<vector<float>> _synapses;
 	const size_t _neurons_count;
-	const size_t _width;
-	const size_t _height;
 
 	int _steps;
 
 public:
 	NeuronNet(
 		const list<vector<state>>& etallons
-	) : _width(sqrt(etallons.back().size())),
-		_height(sqrt(etallons.back().size())),
-		_neurons_count(etallons.back().size()) {
+	) : _neurons_count(etallons.back().size()) {
 
 		learn_neuron_net(etallons);
 	}
@@ -73,7 +61,7 @@ private:
 					etallons.begin(),
 					etallons.end(),
 					float(0.0),
-					[i, j] (float old_syn_val, const vector<state>& image) {
+					[i, j] (float old_syn_val, const vector<state>& image) -> float {
 					return old_syn_val + image[i] * image[j];
 					}
 				);
@@ -113,12 +101,8 @@ private:
 		vector<state>::const_iterator last1,
 		vector<float>::const_iterator first2
 	) {
-		float val = inner_product(
-			first1,
-			last1,
-			first2,
-			float(0.0)
-		);
+
+		float val = inner_product(first1, last1, first2, float(0.0));
 		return val > 0 ? UPPER_STATE : LOWER_STATE;
 	}
 };
