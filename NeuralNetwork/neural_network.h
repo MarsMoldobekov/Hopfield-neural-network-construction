@@ -8,21 +8,6 @@
 
 using namespace std;
 
-enum state{
-	LOWER_STATE = -1, UPPER_STATE = 1
-};
-
-class Neuron {
-public:
-	static state read(uchar i) {
-		return i == 0 ? UPPER_STATE : LOWER_STATE;
-	}
-
-	static uchar write(state s) {
-		return s == UPPER_STATE ? 0 : 255;
-	}
-};
-
 class NeuronNet {
 private:
 	vector<vector<float>> _synapses;
@@ -31,6 +16,10 @@ private:
 	int _steps;
 
 public:
+	enum state{
+		LOWER_STATE = -1, UPPER_STATE = 1
+	};
+
 	NeuronNet(
 		const list<vector<state>>& etallons
 	) : _neurons_count(etallons.back().size()) {
@@ -48,6 +37,14 @@ public:
 		}
 
 		return _steps;
+	}
+
+	static state read(uchar i) {
+		return i == 0 ? UPPER_STATE : LOWER_STATE;
+	}
+
+	static uchar write(state s) {
+		return s == UPPER_STATE ? 0 : 255;
 	}
 
 private:
