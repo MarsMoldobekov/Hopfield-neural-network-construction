@@ -13,6 +13,8 @@
 using namespace std;
 using namespace cv;
 
+typedef NeuronNet::state state;
+
 string getFilesExt(string s) {
     size_t i = s.rfind('.', s.length());
 
@@ -62,7 +64,7 @@ vector<state> mat_to_vector(const Mat& m) {
 
     for_each(_array.begin(), _array.end(),
         [&data](uchar val) {
-            data.push_back(Neuron::read(val));
+            data.push_back(NeuronNet::read(val));
         }
     );
 
@@ -72,7 +74,7 @@ vector<state> mat_to_vector(const Mat& m) {
 Mat vector_to_mat(const vector<state>& image_v) {
     vector<uchar> image_u;
     for_each(image_v.begin(), image_v.end(), [&image_u](state val) {
-        image_u.push_back(Neuron::write(val));
+        image_u.push_back(NeuronNet::write(val));
     });
 
     Mat image_m = Mat(image_u, true).reshape(1, 50);
